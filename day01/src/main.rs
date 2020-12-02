@@ -30,7 +30,7 @@ fn part2(input: &str) -> Result<isize> {
             continue;
         }
 
-        for inner_entry in entries.iter() {
+        for inner_entry in entries.iter().filter(|e| *e != entry) {
             if entries.contains(&(target - inner_entry)) {
                 return Ok(entry * inner_entry * (target - inner_entry))
             }
