@@ -16,29 +16,19 @@ fn parse_seat(seat: &str) -> Result<usize> {
         return Err(anyhow!("seat must be 10 long"));
     }
 
-    let mut row = 0;
-    for i in 0..7 {
-        match seat.chars().nth(i) {
-            Some('F') => {
-                row = row << 1;
+    // TODO: This doesn't verify that the first 7 are F/B and last 3 are L/R
+    let mut id = 0;
+    for c in seat.chars() {
+        match c {
+            'F' | 'L' => {
+                id = id << 1;
             }
-            Some('B') => row = (row << 1) + 1,
+            'B' | 'R' => id = (id << 1) + 1,
             _ => return Err(anyhow!("invalid seat")),
         }
     }
 
-    let mut col = 0;
-    for i in 7..10 {
-        match seat.chars().nth(i) {
-            Some('L') => {
-                col = col << 1;
-            }
-            Some('R') => col = (col << 1) + 1,
-            _ => return Err(anyhow!("invalid seat")),
-        }
-    }
-
-    Ok(row * 8 + col)
+    Ok(id)
 }
 
 fn part1(input: &str) -> Result<usize> {
